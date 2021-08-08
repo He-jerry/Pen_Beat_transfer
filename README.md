@@ -1,4 +1,4 @@
-# Music Translation
+# Music Translation(From other type of the Music to the Pen-Beat Style Music)
 PyTorch implementation of the method described in the [A Universal Music Translation Network](https://arxiv.org/abs/1805.07848).
 
 <p align="center"><img width="70%" src="img/fig.png" /></p>
@@ -12,94 +12,31 @@ This repository includes [fast-inference kernels written by nvidia](https://gith
 were modified to match our architecture as detailed in the paper.
 
 ## Quick Links
-- [Samples](https://musictranslation.github.io/)
-- [Setup](#setup)
-- [Training](#training)
-- [Inference](#inference)
+
 
 ## Setup
 
 ### Software
-Requirements: 
-* Linux
-* Python 3.7
-* PyTorch v1.0.1
-* Install python packages
-    ```
-    git clone https://github.com/facebookresearch/music-translation.git
-    cd music-translation
-    pip install -r requirements.txt
-    ```
-* Install fast inference wavenet kernels (requires Tesla V100 GPU):
-    ```
-    cd src/nv-wavenet
-    python setup.py install
-    ```
 
 ### Data
 
-1. Download MusicNet dataset from [here](https://homes.cs.washington.edu/~thickstn/musicnet.html) into ```musicnet``` folder.
-2. Extract specific domains from MusicNet dataset: 
-   ```
-   python src/parse_musicnet.py -i musicnet -o musicnet/parsed
-   ```
-3. Split into train/test/val 
-    ```
-    for d in musicnet/parsed/*/ ; do python src/split_dir.py -i $d -o musicnet/split/$(basename "$d"); done
-    ```
-4. Preprocess audio for training
-    ```
-    python src/preprocess.py -i musicnet/split -o musicnet/preprocessed
-    ```
 
 ### Pretrained Models
 
-Pretrained models are available [here](https://dl.fbaipublicfiles.com/music-translation/pretrained_musicnet.zip). Downloaded models should be saved under ```checkpoints/pretrained_musicnet```
+
 
 ## Training
 
-We provide training instructions for both single node and multi-node training. 
-Our results were achieved following 3 days of training on 6 nodes, each with 8 gpus. 
+
 
 ### Single Node Training
 
-Execute the train script:
-```
-./train.sh
-```
 
-Trained models will be saved in the ``checkpoints/musicnet`` directory.
 
 ### Multi-Node Training
 
-To train in Multi-Node training, use the follow the instructions below. NOTE: Multi-Node training requires a single node per dataset. 
-
-Execute the train script (on each node):
-```
-train_dist.sh <nnodes> <node_rank> <master_address>
-```
-The parameters are as follows:
-```
-<nnodes>            - Number of nodes participating in the training.
-<node_rank>         - The rank of the current node.
-<master_address>    - Address of the master node.
-```
 
 ## Inference
-
-We provide both interactive/offline generation scripts based on [nv-wavenet CUDA kernels](https://github.com/NVIDIA/nv-wavenet):
-1. ``notebooks/Generate.ipynb`` - interactive generation.   
-2. ``sample.sh <checkpiont name> "<decoders ids>"`` - samples short segments of audio from each dataset and converts to 
-the domains the method was trained on. Running the script will create a ``result\DATE`` directory, with subfolder for 
-each decoder. See ``src/run_on_files.py`` for more details. 
-
-For example, to use the pretrained models:
-```
-sample.sh pretrained_musicnet "0 1 2 3 4 5"
-```
-
-In addition, we provide python-based generation:
-1. ``sample_py.sh <checkpiont name> "<decoders ids>"`` - same as 2. above.
 
 
 ## License
