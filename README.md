@@ -46,3 +46,5 @@ You may find out more about the license From FaceBook Research [here](https://gi
     year      = {2019},
 }
 ```
+
+The project is based on the [Facebook Research of music translation](https://github.com/facebookresearch/music-translation)
